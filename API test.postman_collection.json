@@ -1,0 +1,1309 @@
+{
+	"info": {
+		"_postman_id": "63ea846b-2fef-4989-8de4-72d1194fa17f",
+		"name": "API test",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "29597492"
+	},
+	"item": [
+		{
+			"name": "Test_User",
+			"item": [
+				{
+					"name": "Positive",
+					"item": [
+						{
+							"name": "Gender_female",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Verify status code is 200\", function () {\r",
+											"    pm.response.to.have.status(200);\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Validate response structure for female users\", function () {\r",
+											"    // Проверяем, что респонс существует и содержит JSON\r",
+											"    if (pm.response && pm.response.json) {\r",
+											"        const responseJson = pm.response.json();\r",
+											"\r",
+											"        // Проверка, что isSuccess является boolean\r",
+											"        pm.expect(responseJson.isSuccess).to.be.a('boolean');\r",
+											"\r",
+											"        // Проверка, что errorCode является integer\r",
+											"        pm.expect(responseJson.errorCode).to.be.a('number');\r",
+											"\r",
+											"        // Проверка, что errorMessage является строкой или null\r",
+											"        pm.expect(responseJson.errorMessage).to.satisfy(function(value) {\r",
+											"            return value === null || typeof value === 'string';\r",
+											"        }, \"Expected errorMessage to be a string or null\");\r",
+											"\r",
+											"        // Проверка, что idList является массивом с числами\r",
+											"        pm.expect(responseJson.idList).to.be.an('array');\r",
+											"        responseJson.idList.forEach(function(id) {\r",
+											"            pm.expect(id).to.be.a('number');\r",
+											"        });\r",
+											"\r",
+											"        // Дополнительная проверка: успех ответа\r",
+											"        pm.expect(responseJson.isSuccess).to.eql(true, \"Expected response to be successful\");\r",
+											"    } else {\r",
+											"        pm.expect.fail(\"Response or JSON body is undefined.\");\r",
+											"    }\r",
+											"});\r",
+											"\r",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "https://hr-challenge.dev.tapyou.com/api/test/users?gender=female",
+									"protocol": "https",
+									"host": [
+										"hr-challenge",
+										"dev",
+										"tapyou",
+										"com"
+									],
+									"path": [
+										"api",
+										"test",
+										"users"
+									],
+									"query": [
+										{
+											"key": "gender",
+											"value": "female"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Gender_male",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Verify status code is 200\", function () {\r",
+											"    pm.response.to.have.status(200);\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Validate response structure for female users\", function () {\r",
+											"    // Проверяем, что респонс существует и содержит JSON\r",
+											"    if (pm.response && pm.response.json) {\r",
+											"        const responseJson = pm.response.json();\r",
+											"\r",
+											"        // Проверка, что isSuccess является boolean\r",
+											"        pm.expect(responseJson.isSuccess).to.be.a('boolean');\r",
+											"\r",
+											"        // Проверка, что errorCode является integer\r",
+											"        pm.expect(responseJson.errorCode).to.be.a('number');\r",
+											"\r",
+											"        // Проверка, что errorMessage является строкой или null\r",
+											"        pm.expect(responseJson.errorMessage).to.satisfy(function(value) {\r",
+											"            return value === null || typeof value === 'string';\r",
+											"        }, \"Expected errorMessage to be a string or null\");\r",
+											"\r",
+											"        // Проверка, что idList является массивом с числами\r",
+											"        pm.expect(responseJson.idList).to.be.an('array');\r",
+											"        responseJson.idList.forEach(function(id) {\r",
+											"            pm.expect(id).to.be.a('number');\r",
+											"        });\r",
+											"\r",
+											"        // Дополнительная проверка: успех ответа\r",
+											"        pm.expect(responseJson.isSuccess).to.eql(true, \"Expected response to be successful\");\r",
+											"    } else {\r",
+											"        pm.expect.fail(\"Response or JSON body is undefined.\");\r",
+											"    }\r",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "https://hr-challenge.dev.tapyou.com/api/test/users?gender=male",
+									"protocol": "https",
+									"host": [
+										"hr-challenge",
+										"dev",
+										"tapyou",
+										"com"
+									],
+									"path": [
+										"api",
+										"test",
+										"users"
+									],
+									"query": [
+										{
+											"key": "gender",
+											"value": "male"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "ID_List_checking_female",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"// Определяем список ID для female пользователей\r",
+											"const femaleIds = [\"5\", \"15\", \"16\", \"300\", \"502\", \"503\"];\r",
+											"\r",
+											"// Сохраняем длину массива femaleIds в переменную окружения\r",
+											"pm.environment.set(\"femaleIdsLength\", femaleIds.length);\r",
+											"\r",
+											"// Получаем текущий индекс из переменной окружения, если он не определен, устанавливаем на 0\r",
+											"let currentIndex = pm.environment.get(\"currentFemaleIndex\") || 0;\r",
+											"\r",
+											"// Проверяем, достигли ли мы конца списка\r",
+											"if (currentIndex < femaleIds.length) {\r",
+											"    // Устанавливаем текущий ID для запроса\r",
+											"    let currentId = femaleIds[currentIndex];\r",
+											"    pm.environment.set(\"userId\", currentId);\r",
+											"\r",
+											"    // Увеличиваем индекс и сохраняем его\r",
+											"    pm.environment.set(\"currentFemaleIndex\", currentIndex + 1);\r",
+											"} else {\r",
+											"    console.log(\"Все female ID обработаны.\");\r",
+											"    pm.environment.set(\"currentFemaleIndex\", 0);  // Сброс индекса\r",
+											"    pm.execution.setNextRequest(null); // Остановка выполнения после последнего запроса\r",
+											"}\r",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								},
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Validate gender for specific female user ID\", function () {\r",
+											"    // Проверяем, что респонс существует и содержит JSON\r",
+											"    if (pm.response && pm.response.json) {\r",
+											"        const responseJson = pm.response.json();\r",
+											"        const gender = responseJson.user.gender; // Гендер, полученный из ответа\r",
+											"\r",
+											"        // Определяем ожидаемый гендер\r",
+											"        const expectedGender = \"female\";\r",
+											"\r",
+											"        // Проверяем, совпадает ли значение гендера с ожидаемым\r",
+											"        pm.expect(gender).to.eql(expectedGender, `Expected gender is ${expectedGender}, but got ${gender}`);\r",
+											"    } else {\r",
+											"        pm.expect.fail(\"Response or JSON body is undefined.\");\r",
+											"    }\r",
+											"});\r",
+											"\r",
+											"// Проверяем, нужно ли продолжать выполнение\r",
+											"let currentIndex = pm.environment.get(\"currentFemaleIndex\") || 0;\r",
+											"let femaleIdsLength = pm.environment.get(\"femaleIdsLength\") || 0;\r",
+											"\r",
+											"if (currentIndex < femaleIdsLength) {\r",
+											"    pm.execution.setNextRequest(pm.info.requestName); // Переходим к следующему запросу\r",
+											"} else {\r",
+											"    pm.execution.setNextRequest(null); // Останавливаем выполнение после последнего запроса\r",
+											"}\r",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "https://hr-challenge.dev.tapyou.com/api/test/user/{{userId}}",
+									"protocol": "https",
+									"host": [
+										"hr-challenge",
+										"dev",
+										"tapyou",
+										"com"
+									],
+									"path": [
+										"api",
+										"test",
+										"user",
+										"{{userId}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "ID_List_checking_male",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"// Определяем список ID для male пользователей\r",
+											"const maleIds = [\"10\", \"15\", \"33\", \"94\", \"501\", \"911\"];\r",
+											"\r",
+											"// Получаем текущий индекс из переменной окружения, если он не определен, устанавливаем на 0\r",
+											"let currentIndex = pm.environment.get(\"currentMaleIndex\") || 0;\r",
+											"\r",
+											"// Проверяем, достигли ли мы конца списка\r",
+											"if (currentIndex < maleIds.length) {\r",
+											"    // Устанавливаем текущий ID для запроса\r",
+											"    let currentId = maleIds[currentIndex];\r",
+											"    pm.environment.set(\"userId\", currentId);\r",
+											"\r",
+											"    // Увеличиваем индекс и сохраняем его\r",
+											"    pm.environment.set(\"currentMaleIndex\", currentIndex + 1);\r",
+											"} else {\r",
+											"    console.log(\"Все male ID обработаны.\");\r",
+											"    pm.environment.set(\"currentMaleIndex\", 0);  // Сброс индекса\r",
+											"    pm.execution.setNextRequest(null); // Остановка выполнения после последнего запроса\r",
+											"}\r",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								},
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Validate gender and ID for specific male user ID\", function () {\r",
+											"    if (pm.response && pm.response.json) {\r",
+											"        const responseJson = pm.response.json();\r",
+											"        const userId = pm.environment.get(\"userId\");\r",
+											"        const gender = responseJson.user.gender;\r",
+											"        const returnedId = responseJson.user.id; // Получаем значение ID из ответа\r",
+											"\r",
+											"        // Определяем ожидаемый гендер\r",
+											"        const expectedGender = \"male\";\r",
+											"\r",
+											"        // Проверяем, совпадает ли значение гендера с ожидаемым\r",
+											"        pm.expect(gender).to.eql(expectedGender, `Expected gender for user ID ${userId} is ${expectedGender}, but got ${gender}`);\r",
+											"\r",
+											"        // Проверяем, совпадает ли значение ID с запрашиваемым ID\r",
+											"        pm.expect(returnedId.toString()).to.eql(userId, `Expected ID is ${userId}, but got ${returnedId}`);\r",
+											"    } else {\r",
+											"        pm.expect.fail(\"Response or JSON body is undefined.\");\r",
+											"    }\r",
+											"});\r",
+											"\r",
+											"// Проверяем, нужно ли продолжать выполнение\r",
+											"let currentIndex = pm.environment.get(\"currentMaleIndex\") || 0;\r",
+											"let maleIdsLength = pm.environment.get(\"maleIdsLength\") || 0;\r",
+											"\r",
+											"if (currentIndex < maleIdsLength) {\r",
+											"    pm.execution.setNextRequest(pm.info.requestName); // Переходим к следующему запросу\r",
+											"} else {\r",
+											"    pm.execution.setNextRequest(null); // Останавливаем выполнение после последнего запроса\r",
+											"}\r",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "https://hr-challenge.dev.tapyou.com/api/test/user/{{userId}}",
+									"protocol": "https",
+									"host": [
+										"hr-challenge",
+										"dev",
+										"tapyou",
+										"com"
+									],
+									"path": [
+										"api",
+										"test",
+										"user",
+										"{{userId}}"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Negative",
+					"item": [
+						{
+							"name": "spaces",
+							"item": [
+								{
+									"name": "Gender_space_start",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Verify status code is 500 (Negative)\", function () {\r",
+													"    pm.response.to.have.status(500);\r",
+													"});"
+												],
+												"type": "text/javascript",
+												"packages": {}
+											}
+										}
+									],
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "https://hr-challenge.dev.tapyou.com/api/test/users?gender= male ",
+											"protocol": "https",
+											"host": [
+												"hr-challenge",
+												"dev",
+												"tapyou",
+												"com"
+											],
+											"path": [
+												"api",
+												"test",
+												"users"
+											],
+											"query": [
+												{
+													"key": "gender",
+													"value": " male "
+												}
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Gender_space_end",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Verify status code is 500 (Negative)\", function () {\r",
+													"    pm.response.to.have.status(500);\r",
+													"});"
+												],
+												"type": "text/javascript",
+												"packages": {}
+											}
+										}
+									],
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "https://hr-challenge.dev.tapyou.com/api/test/users?gender=male ",
+											"protocol": "https",
+											"host": [
+												"hr-challenge",
+												"dev",
+												"tapyou",
+												"com"
+											],
+											"path": [
+												"api",
+												"test",
+												"users"
+											],
+											"query": [
+												{
+													"key": "gender",
+													"value": "male "
+												}
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Gender_space_mid",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Verify status code is 500 (Negative)\", function () {\r",
+													"    pm.response.to.have.status(500);\r",
+													"});"
+												],
+												"type": "text/javascript",
+												"packages": {}
+											}
+										}
+									],
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "https://hr-challenge.dev.tapyou.com/api/test/users?gender=ma le",
+											"protocol": "https",
+											"host": [
+												"hr-challenge",
+												"dev",
+												"tapyou",
+												"com"
+											],
+											"path": [
+												"api",
+												"test",
+												"users"
+											],
+											"query": [
+												{
+													"key": "gender",
+													"value": "ma le"
+												}
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						},
+						{
+							"name": "Gender_unknown_type",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Verify status code is 500 (Negative)\", function () {\r",
+											"    pm.response.to.have.status(500);\r",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "https://hr-challenge.dev.tapyou.com/api/test/users?gender=a",
+									"protocol": "https",
+									"host": [
+										"hr-challenge",
+										"dev",
+										"tapyou",
+										"com"
+									],
+									"path": [
+										"api",
+										"test",
+										"users"
+									],
+									"query": [
+										{
+											"key": "gender",
+											"value": "a"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Gender_special_symbol",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Verify status code is 500 (Negative)\", function () {\r",
+											"    pm.response.to.have.status(500);\r",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "https://hr-challenge.dev.tapyou.com/api/test/users?gender=@#$",
+									"protocol": "https",
+									"host": [
+										"hr-challenge",
+										"dev",
+										"tapyou",
+										"com"
+									],
+									"path": [
+										"api",
+										"test",
+										"users"
+									],
+									"query": [
+										{
+											"key": "gender",
+											"value": "@"
+										}
+									],
+									"hash": "$"
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Gender_Uppercase_male",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Verify status code is 500 (Negative)\", function () {\r",
+											"    pm.response.to.have.status(500);\r",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "https://hr-challenge.dev.tapyou.com/api/test/users?gender=MALE",
+									"protocol": "https",
+									"host": [
+										"hr-challenge",
+										"dev",
+										"tapyou",
+										"com"
+									],
+									"path": [
+										"api",
+										"test",
+										"users"
+									],
+									"query": [
+										{
+											"key": "gender",
+											"value": "MALE"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Gender_Uppercase1stSymbol_female",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Verify status code is 500 (Negative)\", function () {\r",
+											"    pm.response.to.have.status(500);\r",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "https://hr-challenge.dev.tapyou.com/api/test/users?gender=Female",
+									"protocol": "https",
+									"host": [
+										"hr-challenge",
+										"dev",
+										"tapyou",
+										"com"
+									],
+									"path": [
+										"api",
+										"test",
+										"users"
+									],
+									"query": [
+										{
+											"key": "gender",
+											"value": "Female"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Gender_number",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Verify status code is 500 (Negative)\", function () {\r",
+											"    pm.response.to.have.status(500);\r",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "https://hr-challenge.dev.tapyou.com/api/test/users?gender=123",
+									"protocol": "https",
+									"host": [
+										"hr-challenge",
+										"dev",
+										"tapyou",
+										"com"
+									],
+									"path": [
+										"api",
+										"test",
+										"users"
+									],
+									"query": [
+										{
+											"key": "gender",
+											"value": "123"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Gender_empty",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Verify status code is 500 (Negative)\", function () {\r",
+											"    pm.response.to.have.status(500);\r",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "https://hr-challenge.dev.tapyou.com/api/test/users?gender=",
+									"protocol": "https",
+									"host": [
+										"hr-challenge",
+										"dev",
+										"tapyou",
+										"com"
+									],
+									"path": [
+										"api",
+										"test",
+										"users"
+									],
+									"query": [
+										{
+											"key": "gender",
+											"value": ""
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Gender_without",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Verify status code is 400 (Negative)\", function () {\r",
+											"    pm.response.to.have.status(400);\r",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "https://hr-challenge.dev.tapyou.com/api/test/users",
+									"protocol": "https",
+									"host": [
+										"hr-challenge",
+										"dev",
+										"tapyou",
+										"com"
+									],
+									"path": [
+										"api",
+										"test",
+										"users"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Gender_html_tag",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Verify status code is 500 (Negative)\", function () {\r",
+											"    pm.response.to.have.status(500);\r",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "https://hr-challenge.dev.tapyou.com/api/test/users?gender=<p>your ad could be here</p>",
+									"protocol": "https",
+									"host": [
+										"hr-challenge",
+										"dev",
+										"tapyou",
+										"com"
+									],
+									"path": [
+										"api",
+										"test",
+										"users"
+									],
+									"query": [
+										{
+											"key": "gender",
+											"value": "<p>your ad could be here</p>"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Gender_null",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Verify status code is 500 (Negative)\", function () {\r",
+											"    pm.response.to.have.status(500);\r",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "https://hr-challenge.dev.tapyou.com/api/test/users?gender=null",
+									"protocol": "https",
+									"host": [
+										"hr-challenge",
+										"dev",
+										"tapyou",
+										"com"
+									],
+									"path": [
+										"api",
+										"test",
+										"users"
+									],
+									"query": [
+										{
+											"key": "gender",
+											"value": "null"
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "Test_id",
+			"item": [
+				{
+					"name": "Positive",
+					"item": [
+						{
+							"name": "ID_List_checking",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"// Определяем список ID пользователей, которые нужно проверить\r",
+											"const userIds = [\"5\", \"10\", \"15\", \"16\", \"33\", \"94\", \"300\", \"501\", \"502\", \"503\", \"911\"];\r",
+											"\r",
+											"// Получаем текущий индекс из переменной окружения, если он не определен, устанавливаем на 0\r",
+											"let currentIndex = pm.environment.get(\"currentUserIndex\") || 0;\r",
+											"\r",
+											"// Проверяем, достигли ли мы конца списка\r",
+											"if (currentIndex >= userIds.length) {\r",
+											"    console.log(\"Все ID обработаны.\");\r",
+											"    pm.environment.set(\"currentUserIndex\", 0);  // Сброс индекса\r",
+											"    pm.execution.stop();  // Остановка выполнения\r",
+											"} else {\r",
+											"    // Устанавливаем текущий ID для запроса\r",
+											"    let currentId = userIds[currentIndex];\r",
+											"    pm.environment.set(\"userId\", currentId);\r",
+											"\r",
+											"    // Увеличиваем индекс и сохраняем его\r",
+											"    currentIndex++;\r",
+											"    pm.environment.set(\"currentUserIndex\", currentIndex);\r",
+											"}\r",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								},
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Validate ID for specific user\", function () {\r",
+											"    // Проверяем, что респонс существует и содержит JSON\r",
+											"    if (pm.response && pm.response.json) {\r",
+											"        const responseJson = pm.response.json();\r",
+											"        const requestedUserId = pm.environment.get(\"userId\"); // ID, отправленный в запросе\r",
+											"        const returnedId = responseJson.user.id.toString(); // ID, полученный из ответа\r",
+											"\r",
+											"        // Проверяем, совпадает ли значение ID с запрашиваемым ID\r",
+											"        pm.expect(returnedId).to.eql(requestedUserId, `Expected ID for user ID ${requestedUserId} is ${requestedUserId}, but got ${returnedId}`);\r",
+											"    } else {\r",
+											"        pm.expect.fail(\"Response or JSON body is undefined.\");\r",
+											"    }\r",
+											"});\r",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "https://hr-challenge.dev.tapyou.com/api/test/user/{{userId}}",
+									"protocol": "https",
+									"host": [
+										"hr-challenge",
+										"dev",
+										"tapyou",
+										"com"
+									],
+									"path": [
+										"api",
+										"test",
+										"user",
+										"{{userId}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "ID_List_structure_checking",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"// Определяем список ID пользователей, которые нужно проверить\r",
+											"const userIds = [\"5\", \"10\", \"15\", \"16\", \"33\", \"94\", \"300\", \"501\", \"502\", \"503\", \"911\"];\r",
+											"\r",
+											"// Получаем текущий индекс из переменной окружения, если он не определен, устанавливаем на 0\r",
+											"let currentIndex = pm.environment.get(\"currentUserIndex\") || 0;\r",
+											"\r",
+											"// Проверяем, достигли ли мы конца списка\r",
+											"if (currentIndex < userIds.length) {\r",
+											"    // Устанавливаем текущий ID для запроса\r",
+											"    let currentId = userIds[currentIndex];\r",
+											"    pm.environment.set(\"userId\", currentId);\r",
+											"\r",
+											"    // Увеличиваем индекс и сохраняем его\r",
+											"    pm.environment.set(\"currentUserIndex\", currentIndex + 1);\r",
+											"} else {\r",
+											"    console.log(\"Все ID обработаны.\");\r",
+											"    pm.environment.set(\"currentUserIndex\", 0);  // Сброс индекса\r",
+											"}\r",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								},
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Validate response structure\", function () {\r",
+											"    if (pm.response && pm.response.json) {\r",
+											"        const responseJson = pm.response.json();\r",
+											"\r",
+											"        // Проверка, что isSuccess является boolean\r",
+											"        pm.expect(responseJson.isSuccess).to.be.a('boolean');\r",
+											"\r",
+											"        // Проверка, что errorCode является integer\r",
+											"        pm.expect(responseJson.errorCode).to.be.a('number');\r",
+											"\r",
+											"        // Проверка, что errorMessage является строкой или null\r",
+											"        pm.expect(responseJson.errorMessage).to.satisfy(function(value) {\r",
+											"            return value === null || typeof value === 'string';\r",
+											"        }, \"Expected errorMessage to be a string or null\");\r",
+											"\r",
+											"        // Проверка, что user объект существует\r",
+											"        pm.expect(responseJson.user).to.be.an('object');\r",
+											"\r",
+											"        const user = responseJson.user;\r",
+											"\r",
+											"        // Проверка, что id является integer\r",
+											"        pm.expect(user.id).to.be.a('number');\r",
+											"\r",
+											"        // Проверка, что name является строкой\r",
+											"        pm.expect(user.name).to.be.a('string');\r",
+											"\r",
+											"        // Проверка, что gender является строкой\r",
+											"        pm.expect(user.gender).to.be.a('string');\r",
+											"\r",
+											"        // Проверка, что age является integer\r",
+											"        pm.expect(user.age).to.be.a('number');\r",
+											"\r",
+											"        // Проверка, что city является строкой\r",
+											"        pm.expect(user.city).to.be.a('string');\r",
+											"\r",
+											"        // Проверка, что registrationDate является строкой и соответствует формату даты-времени\r",
+											"        pm.expect(user.registrationDate).to.be.a('string');\r",
+											"        pm.expect(user.registrationDate).to.match(/^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}(?:\\.\\d{1,9})?$/, \"Expected registrationDate to be in format '2017-04-12T18:30:01.000000021' or 'YYYY-MM-DDTHH:mm:ss'\");\r",
+											"\r",
+											"    } else {\r",
+											"        pm.expect.fail(\"Response or JSON body is undefined.\");\r",
+											"    }\r",
+											"});\r",
+											"\r",
+											"// Проверяем, нужно ли продолжать выполнение\r",
+											"let currentIndex = pm.environment.get(\"currentUserIndex\") || 0;\r",
+											"const userIds = [\"5\", \"10\", \"15\", \"16\", \"33\", \"94\", \"300\", \"501\", \"502\", \"503\", \"911\"];\r",
+											"\r",
+											"if (currentIndex < userIds.length) {\r",
+											"    pm.execution.setNextRequest(pm.info.requestName); // Переходим к следующему запросу\r",
+											"} else {\r",
+											"    pm.execution.setNextRequest(null); // Останавливаем выполнение после последнего запроса\r",
+											"}\r",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "https://hr-challenge.dev.tapyou.com/api/test/user/{{userId}}",
+									"protocol": "https",
+									"host": [
+										"hr-challenge",
+										"dev",
+										"tapyou",
+										"com"
+									],
+									"path": [
+										"api",
+										"test",
+										"user",
+										"{{userId}}"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Negative",
+					"item": [
+						{
+							"name": "ID = 15.2",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 400\", function () {\r",
+											"    pm.response.to.have.status(400);\r",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "https://hr-challenge.dev.tapyou.com/api/test/user/15.2",
+									"protocol": "https",
+									"host": [
+										"hr-challenge",
+										"dev",
+										"tapyou",
+										"com"
+									],
+									"path": [
+										"api",
+										"test",
+										"user",
+										"15.2"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "ID =  10 (start with space)",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 400\", function () {\r",
+											"    pm.response.to.have.status(400);\r",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "https://hr-challenge.dev.tapyou.com/api/test/user/ 10",
+									"protocol": "https",
+									"host": [
+										"hr-challenge",
+										"dev",
+										"tapyou",
+										"com"
+									],
+									"path": [
+										"api",
+										"test",
+										"user",
+										" 10"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "ID = 10 (end with space)",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 400\", function () {\r",
+											"    pm.response.to.have.status(400);\r",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "https://hr-challenge.dev.tapyou.com/api/test/user/15.2",
+									"protocol": "https",
+									"host": [
+										"hr-challenge",
+										"dev",
+										"tapyou",
+										"com"
+									],
+									"path": [
+										"api",
+										"test",
+										"user",
+										"15.2"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "ID = a",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "https://hr-challenge.dev.tapyou.com/api/test/user/15.2",
+									"protocol": "https",
+									"host": [
+										"hr-challenge",
+										"dev",
+										"tapyou",
+										"com"
+									],
+									"path": [
+										"api",
+										"test",
+										"user",
+										"15.2"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "ID = -10",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "https://hr-challenge.dev.tapyou.com/api/test/user/15.2",
+									"protocol": "https",
+									"host": [
+										"hr-challenge",
+										"dev",
+										"tapyou",
+										"com"
+									],
+									"path": [
+										"api",
+										"test",
+										"user",
+										"15.2"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "ID = @#$",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "https://hr-challenge.dev.tapyou.com/api/test/user/15.2",
+									"protocol": "https",
+									"host": [
+										"hr-challenge",
+										"dev",
+										"tapyou",
+										"com"
+									],
+									"path": [
+										"api",
+										"test",
+										"user",
+										"15.2"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "ID = 999999",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 404\", function () {\r",
+											"    pm.response.to.have.status(404);\r",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "https://hr-challenge.dev.tapyou.com/api/test/user/999999",
+									"protocol": "https",
+									"host": [
+										"hr-challenge",
+										"dev",
+										"tapyou",
+										"com"
+									],
+									"path": [
+										"api",
+										"test",
+										"user",
+										"999999"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			]
+		}
+	]
+}
